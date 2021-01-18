@@ -1,0 +1,36 @@
+-320000	-440000	-45	7p,Helvetica-Narrow-Oblique,white	CM	Mercer Ice Stream
+-370000	-555000	-5	7p,Helvetica-Narrow-Oblique,white	CM	Whillans Ice Stream
+-470000	-450000	-55	7p,Helvetica-Narrow-Oblique,white	CM	Van der Veen Ice Stream
+-750000	-450000	-58	7p,Helvetica-Narrow-Oblique,white	CM	Kamb Ice Stream
+-700000	-700000	-45	7p,Helvetica-Narrow-Oblique,white	CM	Bindschadler Ice Stream
+-700000	-850000	-37	7p,Helvetica-Narrow-Oblique,white	CM	MacAyeal Ice Stream
+-370000	-480000	-30	7p,Helvetica-Narrow-Oblique,white	CM	Conway Ice Ridge
+-400000	-600000	0	7p,Helvetica-Narrow-Oblique,white	CM	Engelhardt Ice Ridge
+-100000	-750000	-45	7p,Helvetica-Narrow-Oblique,white	CM	Crary Ice Rise
+-450000	-780000	-35	7p,Helvetica-Narrow-Oblique,white	CM	Siple Dome
+-650000	-800000	-25	7p,Helvetica-Narrow-Oblique,white	CM	Shabtaie Ice Ridge
+-650000	-950000	-15	7p,Helvetica-Narrow-Oblique,white	CM	Harrison Ice Ridge
+-654708	-576842	0	6p,white	TR	K1
+-691043	-536641	0	6p,white	TR	K34
+-707208	-490743	0	6p,white	TR	K6
+-694678	-454385	0	6p,white	TR	K8
+-221982	-609029	0	6p,white	TR	L12
+-240513	-531063	0	6p,white	BL	L78
+-623844	-899502	0	6p,white	TR	Mac1
+-737799	-854500	0	6p,white	TR	Mac4
+-410610	903963	0	6p,white	TR	Recovery2
+-291881	945571	0	6p,white	TR	RecoveryIV
+-406177	1026678	0	6p,white	TR	Slessor23
+-339597	1114039	0	6p,white	TR	Slessor45
+-318410	-519881	0	6p,white	TR	SLC
+-309141	-584103	0	6p,white	TR	SLE2
+-286698	-502122	0	6p,white	BL	SLM
+-285092	-567393	0	6p,white	BL	SLW
+-457675	-487752	0	6p,white	TR	W6
+-544709	-503684	0	6p,white	TR	W7
+-445975	-536672	0	6p,white	TR	WIX
+-171629	-705208	0	6p,white	TC	\*1
+-177903	-655935	0	6p,white	TC	\*2
+-257694	-658994	0	6p,white	TC	\*3
+-216428	-419000	0	6p,white	TC	\*4
+-86319	-532295	0	6p,white	TC	\*5
