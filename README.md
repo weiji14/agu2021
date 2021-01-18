@@ -7,3 +7,10 @@ Scripts for making [PyGMT](https://github.com/GenericMappingTools/pygmt) figures
 Launch in [Pangeo Binder](https://pangeo-binder.readthedocs.io) (Interactive jupyter lab environment in the cloud).
 
 [![Binder](https://binder.pangeo.io/badge_logo.svg)](https://binder.pangeo.io/v2/gh/weiji14/nzasc2021/main)
+
+## Related Projects
+
+The data and code in this project stands on the shoulders of these giants:
+
+- [DeepIceDrain](https://github.com/weiji14/deepicedrain)
+- [Venturelli2020-GRL](https://github.com/mrsiegfried/Venturelli2020-GRL)
