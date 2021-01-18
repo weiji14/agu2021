@@ -6,5 +6,6 @@ dependencies:
   - conda-forge/label/dev::gmt=6.2.0.dev6+98bb060[md5=87a76d183125b5576414fc401a3fa448]
   - conda-forge::jupyterlab=3.0.5[md5=4824b73d683d4efb2f3dfb352b24544a]
   - conda-forge::jupytext=1.9.1[md5=f972dd5d0f40dfce3aea7980216722dd]
+  - conda-forge::pooch=1.3.0[md5=7041d42601fe3de878565ca84c952237]
   - conda-forge::pygmt=0.2.1[md5=6680d2a58216a100401ae1788af17e8c]
   - conda-forge::python=3.8.6[md5=e43784498e6c5983eb80ab00e7ba1c7c]
