@@ -82,17 +82,27 @@ try:
 except AssertionError:
     # Note, download require a .netrc file containing 'machine urs.earthdata.nasa.gov login <uid> password <password>'
     # see https://nsidc.org/support/how/how-do-i-programmatically-access-data-spatial-temporal
-    vel_file: str = pooch.retrieve(
-        url="https://n5eil01u.ecs.nsidc.org/MEASURES/NSIDC-0754.001/1996.01.01/antarctic_ice_vel_phase_map_v01.nc",
-        known_hash="fa0957618b8bd98099f4a419d7dc0e3a2c562d89e9791b4d0ed55e6017f52416",
-        fname="antarctic_ice_vel_phase_map_v01.nc",
-        path=f"{datafold}/Glaciology/MEaSUREs_PhaseBased_Velocity",
-    )
-    with pygmt.clib.Session() as lib:
-        #! gmt grdmath ${vel_file}.nc?VX 2 POW ${vel_file}.nc?VY 2 POW POW 0.5 = ${vel_file}-vmag.nc
-        lib.call_module(
-            module="grdmath",
-            args=f"{vel_file}.nc?VX 2 POW {vel_file}.nc?VY 2 POW POW 0.5 = {vel}",
+    try:
+        # Run processing of velocity magnitude grid locally
+        vel_file: str = pooch.retrieve(
+            url="https://n5eil01u.ecs.nsidc.org/MEASURES/NSIDC-0754.001/1996.01.01/antarctic_ice_vel_phase_map_v01.nc",
+            known_hash="fa0957618b8bd98099f4a419d7dc0e3a2c562d89e9791b4d0ed55e6017f52416",
+            fname="antarctic_ice_vel_phase_map_v01.nc",
+            path=f"{datafold}/Glaciology/MEaSUREs_PhaseBased_Velocity",
+        )
+        with pygmt.clib.Session() as lib:
+            #! gmt grdmath ${vel_file}.nc?VX 2 POW ${vel_file}.nc?VY 2 POW POW 0.5 = ${vel_file}-vmag.nc
+            lib.call_module(
+                module="grdmath",
+                args=f"{vel_file}.nc?VX 2 POW {vel_file}.nc?VY 2 POW POW 0.5 = {vel}",
+            )
+    except:
+        # Just download pre-processed velocity magnitude grid from GitHub
+        vel: str = pooch.retrieve(
+            url="https://github.com/weiji14/nzasc2021/releases/download/v0.0.0/antarctic_ice_vel_phase_map_v01-vmag.nc",
+            known_hash="ed6393275d8d8475c2162a838d6b9220cd529d28a2b5d674a6bf6dbda4971049",
+            fname="antarctic_ice_vel_phase_map_v01-vmag.nc",
+            path=f"{datafold}/Glaciology/MEaSUREs_PhaseBased_Velocity",
         )
 
 # %%
@@ -115,7 +125,7 @@ pygmt.makecpt(
     reverse=True,
 )
 with pygmt.config(COLOR_FOREGROUND="240/249/33", COLOR_BACKGROUND="13/8/135"):
-    pygmt.makecpt(series=[0, 1000, 1], cmap="batlow", output="cmap_vel.cpt")
+    pygmt.makecpt(series=[0, 800, 1], cmap="batlow", output="cmap_vel.cpt")
 pygmt.makecpt(
     cmap="berlin",
     series=[-3, 3, 1],
@@ -144,13 +154,6 @@ sipratio = (sip_yh - sip_yl) / (figheight / 1000)
 sipreg = [sip_xl, sip_xh, sip_yl, sip_yh]
 sipproj = f"x1:{sipratio}"
 sipproj_ll = f"s0/-90/-71/1:{sipratio}"
-
-# Region for Whillans Grounding Zone inset
-wgz_xl, wgz_xh, wgz_yl, wgz_yh = wgzreg = [-185_000, -627_500, -145_000, -580_000]
-
-# Make GMT projection strings (only need PS71 because no graticules)
-wgzratio = sipratio / 7  # 7x zoom in for the WGZ inset seems to work well
-wgzmap = f"x1:{wgzratio}"
 
 # %%
 # Initialize figure and plot MOA as the basemap with ticks every 200 km in xy directions
@@ -216,7 +219,7 @@ with pygmt.helpers.GMTTempFile(suffix=".gmt") as tmpfile:
 # %%
 # Siple Coast placename labels
 gdf = gpd.read_file("antarctic_subglacial_lakes_3031.gmt")
-with open("place_labels_siple_coast.txt", mode="w") as file:
+with open("place_labels_siple_coast.tsv", mode="w") as file:
     # Ice Streams A to E
     font = "7p,Helvetica-Narrow-Oblique,white"
     print(f"-320000\t-440000\t-45\t{font}\tCM\tMercer Ice Stream", file=file)
@@ -264,7 +267,7 @@ with open("place_labels_siple_coast.txt", mode="w") as file:
 # %%
 # Plot labels for Siple Coast ice streams, active subglacial lakes, etc
 fig.text(
-    textfiles="place_labels_siple_coast.txt",
+    textfiles="place_labels_siple_coast.tsv",
     angle=True,
     font=True,
     justify=True,
@@ -325,5 +328,170 @@ fig.show()
 # Save the figure
 fig.savefig(fname="siple_coast_lakes.pdf")
 fig.savefig(fname="siple_coast_lakes.png")
+
+
+# %%
+
+# %% [markdown]
+# # Figure of Antarctic active subglacial lake map
+
+# %%
+# We're making this a specific height
+figheight = 115  # in mm
+
+# Region in PS71 for main part of the figure
+ais_xl, ais_xh, ais_yl, ais_yh = aisreg = [-2700000, 2800000, -2200000, 2300000]
+
+# Calculate the figure width and map scale
+figwidth = figheight * (ais_xh - ais_xl) / (ais_yh - ais_yl)
+aisratio = (ais_yh - ais_yl) / (figheight / 1000)
+
+# Make a GMT region string and projection strings in both PS71 and Lon/Lat
+aisreg = [ais_xl, ais_xh, ais_yl, ais_yh]
+aisproj = "x1:" + str(aisratio)
+aisproj_ll = "s0/-90/-71/1:" + str(aisratio)
+
+
+# %%
+# Initialize figure and plot MOA as the base map with ticks every 200 km both directions
+fig = pygmt.Figure()
+with pygmt.config(MAP_FRAME_TYPE="inside"):
+    # fig.coast(
+    #     projection=aisproj_ll, region=aisreg, land="lightblue", water="royalblue2"
+    # )
+    fig.grdimage(
+        grid="@earth_relief_05m",
+        projection=aisproj_ll,
+        region=aisreg,
+        cmap="oleron",
+        shading=True,
+        verbose="q",
+    )
+    fig.basemap(
+        region=aisreg, projection=aisproj, frame=["nwse", "xf200000", "yf200000"]
+    )
+    fig.grdimage(grid=moa, cmap="cmap_moa.cpt", nan_transparent=True)
+
+# Plot graticules overtop, every 10° latitude and 45° longitude
+with pygmt.config(
+    MAP_ANNOT_OFFSET_PRIMARY="-2p",
+    MAP_FRAME_TYPE="inside",
+    MAP_ANNOT_OBLIQUE=0,
+    FONT_ANNOT_PRIMARY="8p,grey",
+    MAP_GRID_PEN_PRIMARY="grey",
+    MAP_TICK_LENGTH_PRIMARY="-10p",
+    MAP_TICK_PEN_PRIMARY="thinnest,grey",
+    FORMAT_GEO_MAP="dddF",
+    MAP_POLAR_CAP="88/90",  # less longitude graticules at >88°S
+):
+    fig.basemap(
+        projection=aisproj_ll, region=aisreg, frame=["NSWE", "xa45g45", "ya10g10"]
+    )
+
+# Plot the grounding line in white
+fig.plot(data=groundingline, region=aisreg, projection=aisproj, pen="0.15p,white")
+
+# Plot bounding box of Siple Coast study area
+fig.plot(
+    x=[sip_xl, sip_xl, sip_xh, sip_xh, sip_xl],
+    y=[sip_yl, sip_yh, sip_yh, sip_yl, sip_yl],
+    pen="0.5p,black",  # map location in black
+    transparency=50,
+)
+
+# %%
+# Overlay ice velocity with 70% transparency
+fig.grdimage(grid=vel, cmap="cmap_vel.cpt", transparency=70, nan_transparent=True)
+fig.show()
+
+# %%
+# Antarctica placename labels
+with open("place_labels_antarctica.tsv", mode="w") as file:
+    font = "10p,Helvetica-Narrow,white"
+    print(f"-1000000\t-378000\t0\t{font}\tWest", file=file)
+    print(f"-1000000\t-478000\t0\t{font}\tAntarctica", file=file)
+    print(f"1000000\t600000\t0\t{font}\tEast", file=file)
+    print(f"1000000\t500000\t0\t{font}\tAntarctica", file=file)
+
+    font = "6p,Helvetica-Narrow-Oblique,white"
+    print(f"0\t-1000000\t0\t{font}\tRoss", file=file)
+    print(f"0\t-1060000\t0\t{font}\tIce Shelf", file=file)
+    print(f"-1000000\t700000\t0\t{font}\tRonne-Filchner", file=file)
+    print(f"-1000000\t640000\t0\t{font}\tIce Shelf", file=file)
+    print(f"2100000\t760000\t0\t{font}\tAmery", file=file)
+    print(f"2100000\t700000\t0\t{font}\tIce Shelf", file=file)
+
+    font = "3p,Helvetica-Narrow-Oblique,white"
+    print(f"-400000\t1150000\t45\t{font}\tSlessor Glacier", file=file)
+    print(f"-140000\t950000\t0\t{font}\tRecovery Glacier", file=file)
+    print(f"-350000\t250000\t-20\t{font}\tFoundation Ice Stream", file=file)
+    print(f"-800000\t95000\t-60\t{font}\tInstitute Ice Stream", file=file)
+    print(f"-1500000\t50000\t20\t{font}\tRutford Ice Stream", file=file)
+    print(f"-1300000\t-300000\t30\t{font}\tThwaites Glacier", file=file)
+    print(f"-200000\t-800000\t40\t{font}\tSiple Coast", file=file)
+    print(f"500000\t-800000\t35\t{font}\tByrd Glacier", file=file)
+    print(f"850000\t-1700000\t0\t{font}\tCook E2", file=file)
+    print(f"2200000\t-850000\t-70\t{font}\tTotten Glacier", file=file)
+    print(f"1450000\t650000\t20\t{font}\tLambert Glacier", file=file)
+
+# %%
+# Plot labels for Antarctic ice shelves, ice streams, etc
+fig.text(
+    region=aisreg,
+    projection=aisproj,
+    textfiles="place_labels_antarctica.tsv",
+    angle=True,
+    font=True,
+    # frame=["WsNe", "af100000g500000"],
+)
+
+# %%
+# Plot lakes in PS71 as cyan blobs with 60% transparency
+# TODO refactor after pygmt/geopandas integration is done,
+# see https://github.com/GenericMappingTools/pygmt/issues/608
+with pygmt.helpers.GMTTempFile(suffix=".gmt") as tmpfile:
+    os.remove(path=tmpfile.name)
+    gpd.read_file(lakes).to_file(tmpfile.name, driver="OGR_GMT")
+    fig.plot(
+        data=tmpfile.name,  # "antarctic_subglacial_lakes_3031.geojson"
+        pen="0.5p,cyan",
+        color="cyan",
+        transparency=60,
+    )
+fig.show()
+
+# %%
+# Add the finishing touches by putting a panel label in the bottom left corner,
+# and add a legend with a 70% transparent box behind it (so you can see it
+# clearly) that includes:
+# - a cyan ellipse the cyan lakes
+# - a color bar for the ice surface velocity
+barwidth = 0.3 * figwidth / 10  # legend width is 30% of the map width, in cm
+
+# Position string for feeding to the colorbar call. A bit coded, but the pyGMT
+# documents are great: https://www.pygmt.org/dev/api/index.html
+legend_pos: str = f"jBL+jBL+w{barwidth}c+o0.2c/0.2c"
+
+# Plot the color bar once with a transparent box, then again with no box and no transparency
+with pygmt.config(
+    FONT_ANNOT_PRIMARY="8p,white",
+    FONT_LABEL="8p,white",
+    MAP_ANNOT_OFFSET_PRIMARY="2p",
+    MAP_TICK_PEN_PRIMARY="0.5p,white",
+    MAP_TICK_LENGTH_PRIMARY="3p",
+    MAP_FRAME_PEN="0.5p,white",
+    MAP_LABEL_OFFSET="4p",
+):
+    fig.legend(
+        spec="legend.txt", position=legend_pos, box="+gblack+c1.2p", transparency="70"
+    )
+    fig.legend(spec="legend.txt", position=legend_pos)
+
+fig.show()
+
+# %%
+# Save the figure
+fig.savefig(fname="antarctica_lakes.pdf")
+fig.savefig(fname="antarctica_lakes.png")
 
 # %%

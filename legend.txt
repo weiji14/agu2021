@@ -1,0 +1,3 @@
+S - e 0c cyan default,cyan - Active subglacial lakes
+G 0.5c
+B cmap_vel.cpt 0.8c 0.2c+ef+h+ml -Bxa400f200+l"Ice velocity" -By+l"m/yr"

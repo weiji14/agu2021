@@ -4,7 +4,8 @@ Scripts for making [PyGMT](https://github.com/GenericMappingTools/pygmt) figures
 
 **Title**: Spatiotemporal variability of active subglacial lakes in Antarctica from 2018-2020 using ICESat-2 laser altimetry
 
-![Siple Coast active subglacial lakes](https://user-images.githubusercontent.com/23487320/104906156-36b44280-59e8-11eb-8be2-1823d3dbf344.png)
+![Siple Coast active subglacial lakes](https://user-images.githubusercontent.com/23487320/104975486-ab769380-5a5f-11eb-803a-ce254ec53ae4.png)
+![Antarctic active subglacial lakes](https://user-images.githubusercontent.com/23487320/104975476-a580b280-5a5f-11eb-967b-3c1362240279.png)
 
 ## Quickstart
 

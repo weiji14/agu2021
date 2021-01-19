@@ -1,2 +1,9 @@
 # Jupyter Notebook
 .ipynb_checkpoints
+
+# Data files and folders
+Quantarctica3
+
+# Plotted figure files
+*.pdf
+*.png
