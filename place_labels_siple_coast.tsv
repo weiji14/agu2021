@@ -1,7 +1,7 @@
--320000	-440000	-45	7p,Helvetica-Narrow-Oblique,white	CM	Mercer Ice Stream
--370000	-555000	-5	7p,Helvetica-Narrow-Oblique,white	CM	Whillans Ice Stream
+-320000	-440000	-65	7p,Helvetica-Narrow-Oblique,white	CM	Mercer Ice Stream
+-385000	-555000	-5	7p,Helvetica-Narrow-Oblique,white	CM	Whillans Ice Stream
 -470000	-450000	-55	7p,Helvetica-Narrow-Oblique,white	CM	Van der Veen Ice Stream
--750000	-450000	-58	7p,Helvetica-Narrow-Oblique,white	CM	Kamb Ice Stream
+-550000	-625000	-40	7p,Helvetica-Narrow-Oblique,white	CM	Kamb Ice Stream
 -700000	-700000	-45	7p,Helvetica-Narrow-Oblique,white	CM	Bindschadler Ice Stream
 -700000	-850000	-37	7p,Helvetica-Narrow-Oblique,white	CM	MacAyeal Ice Stream
 -370000	-480000	-30	7p,Helvetica-Narrow-Oblique,white	CM	Conway Ice Ridge
@@ -10,27 +10,32 @@
 -450000	-780000	-35	7p,Helvetica-Narrow-Oblique,white	CM	Siple Dome
 -650000	-800000	-25	7p,Helvetica-Narrow-Oblique,white	CM	Shabtaie Ice Ridge
 -650000	-950000	-15	7p,Helvetica-Narrow-Oblique,white	CM	Harrison Ice Ridge
--654708	-576842	0	6p,white	TR	K1
--691043	-536641	0	6p,white	TR	K34
--707208	-490743	0	6p,white	TR	K6
--694678	-454385	0	6p,white	TR	K8
--221982	-609029	0	6p,white	TR	L12
--240513	-531063	0	6p,white	BL	L78
--623844	-899502	0	6p,white	TR	Mac1
--737799	-854500	0	6p,white	TR	Mac4
--410610	903963	0	6p,white	TR	Recovery2
--291881	945571	0	6p,white	TR	RecoveryIV
--406177	1026678	0	6p,white	TR	Slessor23
--339597	1114039	0	6p,white	TR	Slessor45
--318410	-519881	0	6p,white	TR	SLC
--309141	-584103	0	6p,white	TR	SLE2
--286698	-502122	0	6p,white	BL	SLM
--285092	-567393	0	6p,white	BL	SLW
--457675	-487752	0	6p,white	TR	W6
--544709	-503684	0	6p,white	TR	W7
--445975	-536672	0	6p,white	TR	WIX
--171629	-705208	0	6p,white	TC	\*1
--177903	-655935	0	6p,white	TC	\*2
--257694	-658994	0	6p,white	TC	\*3
--216428	-419000	0	6p,white	TC	\*4
--86319	-532295	0	6p,white	TC	\*5
+-654434	-576047	0	6p,white	TR	K1
+-692041	-537563	0	6p,white	TR	K34
+-670526	-505648	0	6p,white	TR	K5
+-708109	-491137	0	6p,white	TR	K6
+-734008	-484326	0	6p,white	TR	K7
+-694922	-454187	0	6p,white	TR	K8
+-220530	-609402	0	6p,white	BL	L12
+-243414	-528466	0	6p,white	BL	L78
+-623748	-899537	0	6p,white	TR	Mac1
+-737436	-854213	0	6p,white	TR	Mac4
+-407340	904532	0	6p,white	TR	Recovery2
+-291474	946087	0	6p,white	TR	RecoveryIV
+-405636	1026675	0	6p,white	TR	Slessor23
+-516409	963600	0	6p,white	TR	Slessor45
+-318655	-519753	0	6p,white	TR	SLC
+-257869	-618613	0	6p,white	TR	SLE
+-286017	-502409	0	6p,white	TC	SLM
+-283618	-566766	0	6p,white	BL	SLW
+-457518	-488273	0	6p,white	TR	W6
+-544690	-503679	0	6p,white	BL	W7
+-446166	-536983	0	6p,white	TR	WIX
+-416326	-523245	0	6p,white	BL	WX
+-323422	-555152	0	6p,white	BL	WXI
+-172355	-705937	0	6p,white	TC	\*1
+-178277	-655600	0	6p,white	TC	\*2
+-258607	-658961	0	6p,white	TC	\*3
+-219999	-428162	0	6p,white	TC	\*4
+-172727	-460611	0	6p,white	TC	\*5
+-85421	-532437	0	6p,white	TC	\*6

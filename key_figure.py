@@ -108,6 +108,7 @@ except AssertionError:
 # %%
 # DeepIceDrain active subglacial lake outlines
 lakes = "https://raw.githubusercontent.com/weiji14/deepicedrain/v0.4.0/antarctic_subglacial_lakes_3031.geojson"
+lakes = "https://github.com/weiji14/deepicedrain/blob/6bbd5831b2fa9bfaf69732aaad6fa6822e02a8d0/antarctic_subglacial_lakes_3031.geojson"
 
 
 # %% [markdown]
@@ -222,10 +223,10 @@ gdf = gpd.read_file("antarctic_subglacial_lakes_3031.gmt")
 with open("place_labels_siple_coast.tsv", mode="w") as file:
     # Ice Streams A to E
     font = "7p,Helvetica-Narrow-Oblique,white"
-    print(f"-320000\t-440000\t-45\t{font}\tCM\tMercer Ice Stream", file=file)
-    print(f"-370000\t-555000\t-5\t{font}\tCM\tWhillans Ice Stream", file=file)
+    print(f"-320000\t-440000\t-65\t{font}\tCM\tMercer Ice Stream", file=file)
+    print(f"-385000\t-555000\t-5\t{font}\tCM\tWhillans Ice Stream", file=file)
     print(f"-470000\t-450000\t-55\t{font}\tCM\tVan der Veen Ice Stream", file=file)
-    print(f"-750000\t-450000\t-58\t{font}\tCM\tKamb Ice Stream", file=file)
+    print(f"-550000\t-625000\t-40\t{font}\tCM\tKamb Ice Stream", file=file)
     print(f"-700000\t-700000\t-45\t{font}\tCM\tBindschadler Ice Stream", file=file)
     print(f"-700000\t-850000\t-37\t{font}\tCM\tMacAyeal Ice Stream", file=file)
 
@@ -259,7 +260,11 @@ with open("place_labels_siple_coast.tsv", mode="w") as file:
             repl=lambda name: abbrev_dict[name.group()], string=row.lake_name
         ).replace(" ", "")
         justify = (
-            "BL" if label in ("L78", "SLM", "SLW") else "TC" if "*" in label else "TR"
+            "BL"
+            if label in ("L12", "L78", "SLW", "W7", "WX", "WXI")
+            else "TC"
+            if ("*" in label or label == "SLM")
+            else "TR"
         )
 
         print(f"{x[0]:.0f}\t{y[0]:.0f}\t0\t6p,white\t{justify}\t{label}", file=file)
@@ -282,7 +287,7 @@ with pygmt.config(
     FONT_ANNOT_PRIMARY="6p,white",
     FONT_LABEL="6p,white",
     MAP_ANNOT_OFFSET_PRIMARY="2p",
-    MAP_TICK_PEN_PRIMARY="0.5p,white",
+    MAP_TICK_PEN_PRIMARY="0.25p,white",
     MAP_TICK_LENGTH_PRIMARY="3p",
     MAP_FRAME_PEN="0.5p,white",
     MAP_LABEL_OFFSET="4p",
@@ -299,6 +304,11 @@ with pygmt.config(
         **colorbar_kwargs,
     )
     fig.colorbar(**colorbar_kwargs)
+
+    # Add a scalebar
+    fig.basemap(
+        projection=sipproj_ll, region=sipreg, map_scale="jBR+o2.2c/0.3c+w50k+uk+f"
+    )
 
 fig.show()
 
@@ -327,7 +337,7 @@ fig.show()
 # %%
 # Save the figure
 fig.savefig(fname="siple_coast_lakes.pdf")
-fig.savefig(fname="siple_coast_lakes.png")
+fig.savefig(fname="siple_coast_lakes.png", dpi=1200)
 
 
 # %%
@@ -359,16 +369,17 @@ with pygmt.config(MAP_FRAME_TYPE="inside"):
     # fig.coast(
     #     projection=aisproj_ll, region=aisreg, land="lightblue", water="royalblue2"
     # )
+    fig.coast(region=aisreg, projection=aisproj_ll, resolution="c", water=True)
     fig.grdimage(
-        grid="@earth_relief_05m",
+        grid="@earth_relief_03m",
         projection=aisproj_ll,
         region=aisreg,
         cmap="oleron",
         shading=True,
-        verbose="q",
     )
+    fig.coast(Q=True)  # end water clip path
     fig.basemap(
-        region=aisreg, projection=aisproj, frame=["nwse", "xf200000", "yf200000"]
+        projection=aisproj, region=aisreg, frame=["nwse", "xf200000", "yf200000"]
     )
     fig.grdimage(grid=moa, cmap="cmap_moa.cpt", nan_transparent=True)
 
@@ -408,10 +419,10 @@ fig.show()
 # Antarctica placename labels
 with open("place_labels_antarctica.tsv", mode="w") as file:
     font = "10p,Helvetica-Narrow,white"
-    print(f"-1000000\t-378000\t0\t{font}\tWest", file=file)
-    print(f"-1000000\t-478000\t0\t{font}\tAntarctica", file=file)
-    print(f"1000000\t600000\t0\t{font}\tEast", file=file)
-    print(f"1000000\t500000\t0\t{font}\tAntarctica", file=file)
+    print(f"-1070000\t-360000\t0\t{font}\tWest", file=file)
+    print(f"-1070000\t-460000\t0\t{font}\tAntarctica", file=file)
+    print(f"950000\t600000\t0\t{font}\tEast", file=file)
+    print(f"950000\t500000\t0\t{font}\tAntarctica", file=file)
 
     font = "6p,Helvetica-Narrow-Oblique,white"
     print(f"0\t-1000000\t0\t{font}\tRoss", file=file)
@@ -421,18 +432,20 @@ with open("place_labels_antarctica.tsv", mode="w") as file:
     print(f"2100000\t760000\t0\t{font}\tAmery", file=file)
     print(f"2100000\t700000\t0\t{font}\tIce Shelf", file=file)
 
-    font = "3p,Helvetica-Narrow-Oblique,white"
+    font = "4p,Helvetica-Narrow-Oblique,white"
     print(f"-400000\t1150000\t45\t{font}\tSlessor Glacier", file=file)
-    print(f"-140000\t950000\t0\t{font}\tRecovery Glacier", file=file)
-    print(f"-350000\t250000\t-20\t{font}\tFoundation Ice Stream", file=file)
-    print(f"-800000\t95000\t-60\t{font}\tInstitute Ice Stream", file=file)
-    print(f"-1500000\t50000\t20\t{font}\tRutford Ice Stream", file=file)
+    print(f"-90000\t850000\t0\t{font}\tRecovery Glacier", file=file)
+    print(f"-340000\t200000\t-30\t{font}\tFoundation Ice Stream", file=file)
+    print(f"-810000\t95000\t-60\t{font}\tInstitute Ice Stream", file=file)
+    # print(f"-1500000\t50000\t20\t{font}\tRutford Ice Stream", file=file)
     print(f"-1300000\t-300000\t30\t{font}\tThwaites Glacier", file=file)
-    print(f"-200000\t-800000\t40\t{font}\tSiple Coast", file=file)
-    print(f"500000\t-800000\t35\t{font}\tByrd Glacier", file=file)
-    print(f"850000\t-1700000\t0\t{font}\tCook E2", file=file)
-    print(f"2200000\t-850000\t-70\t{font}\tTotten Glacier", file=file)
-    print(f"1450000\t650000\t20\t{font}\tLambert Glacier", file=file)
+    print(f"-500000\t-700000\t40\t{font}\tSiple Coast", file=file)
+    print(f"500000\t-440000\t0\t{font}\tNimrod 2", file=file)
+    print(f"550000\t-750000\t35\t{font}\tByrd Glacier", file=file)
+    print(f"700000\t-1500000\t5\t{font}\tDavid Glacier", file=file)
+    print(f"870000\t-1700000\t0\t{font}\tCook E2", file=file)
+    # print(f"2200000\t-850000\t-70\t{font}\tTotten Glacier", file=file)
+    print(f"1400000\t650000\t15\t{font}\tLambert Glacier", file=file)
 
 # %%
 # Plot labels for Antarctic ice shelves, ice streams, etc
@@ -492,6 +505,6 @@ fig.show()
 # %%
 # Save the figure
 fig.savefig(fname="antarctica_lakes.pdf")
-fig.savefig(fname="antarctica_lakes.png")
+fig.savefig(fname="antarctica_lakes.png", dpi=600)
 
 # %%
