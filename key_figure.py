@@ -108,7 +108,7 @@ except AssertionError:
 # %%
 # DeepIceDrain active subglacial lake outlines
 lakes = "https://raw.githubusercontent.com/weiji14/deepicedrain/v0.4.0/antarctic_subglacial_lakes_3031.geojson"
-lakes = "https://github.com/weiji14/deepicedrain/blob/6bbd5831b2fa9bfaf69732aaad6fa6822e02a8d0/antarctic_subglacial_lakes_3031.geojson"
+lakes = "https://raw.githubusercontent.com/weiji14/deepicedrain/6bbd5831b2fa9bfaf69732aaad6fa6822e02a8d0/antarctic_subglacial_lakes_3031.geojson"
 
 
 # %% [markdown]
