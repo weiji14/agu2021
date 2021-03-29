@@ -8,7 +8,7 @@ Scripts for making [PyGMT](https://github.com/GenericMappingTools/pygmt) figures
 
 ![NZASC2021 DeepIceDrain poster](https://user-images.githubusercontent.com/23487320/107176091-4b0dbd00-6a33-11eb-9eba-2d13959e43a8.png)
 ![Siple Coast active subglacial lakes](https://user-images.githubusercontent.com/23487320/107176140-6aa4e580-6a33-11eb-8f30-1a7913788d6c.png)
-![Antarctic active subglacial lakes](https://user-images.githubusercontent.com/23487320/107176124-62e54100-6a33-11eb-82cd-d3671ef7d174.png)
+![Antarctic active subglacial lakes](https://user-images.githubusercontent.com/23487320/112776311-d7d01100-909b-11eb-98df-1c8fa106f34e.png)
 
 ## Quickstart
 

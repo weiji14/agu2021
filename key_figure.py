@@ -107,8 +107,7 @@ except AssertionError:
 
 # %%
 # DeepIceDrain active subglacial lake outlines
-lakes = "https://raw.githubusercontent.com/weiji14/deepicedrain/v0.4.0/antarctic_subglacial_lakes_3031.geojson"
-lakes = "https://raw.githubusercontent.com/weiji14/deepicedrain/6bbd5831b2fa9bfaf69732aaad6fa6822e02a8d0/antarctic_subglacial_lakes_3031.geojson"
+lakes = "https://raw.githubusercontent.com/weiji14/deepicedrain/v0.4.1/antarctic_subglacial_lakes_3031.geojson"
 
 
 # %% [markdown]
@@ -313,12 +312,9 @@ with pygmt.config(
 fig.show()
 
 # %%
-# Make insets of Antarctica
-# Workaround until https://github.com/GenericMappingTools/pygmt/pull/788 is merged
-antwidth = 3  # width of inset in cm
-with pygmt.clib.Session() as lib:
-    lib.call_module(module="inset", args=f"begin -DjTR+w{antwidth}c")
-
+# Make inset overview map of Antarctica
+antwidth: int = 3
+with fig.inset(position=f"jTR+w{antwidth}c"):
     # Plot the inset map
     fig.basemap(region=vel, projection=f"S0/-90/71/{antwidth}c", frame="+n")
     fig.coast(area_thresh="+a", land="white")  # ice shelf in white
@@ -329,9 +325,6 @@ with pygmt.clib.Session() as lib:
         y=[sip_yl, sip_yh, sip_yh, sip_yl, sip_yl],
         pen="1p,black",  # map location in black
     )
-
-    lib.call_module(module="inset", args="end")
-
 fig.show()
 
 # %%
@@ -374,7 +367,7 @@ with pygmt.config(MAP_FRAME_TYPE="inside"):
         grid="@earth_relief_03m",
         projection=aisproj_ll,
         region=aisreg,
-        cmap="oleron",
+        cmap="fes",
         shading=True,
     )
     fig.coast(Q=True)  # end water clip path
