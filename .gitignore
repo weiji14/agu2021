@@ -3,7 +3,11 @@
 
 # Data files and folders
 Quantarctica3
+*.7z
+*.gltf
+*.parquet
 
 # Plotted figure files
+*.jpg
 *.pdf
 *.png
