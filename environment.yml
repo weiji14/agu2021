@@ -2,10 +2,10 @@ name: gmt
 channels:
   - conda-forge
 dependencies:
-  - conda-forge::geopandas=0.9.0[md5=5ad23a6ba0896134cf42bae1a9a0eee7]
-  - conda-forge/label/dev::gmt=6.2.0.dev12+922af84[md5=127e0cc92cf507d09a6975263cdcd359]
-  - conda-forge::jupyterlab=3.0.5[md5=4824b73d683d4efb2f3dfb352b24544a]
-  - conda-forge::jupytext=1.9.1[md5=f972dd5d0f40dfce3aea7980216722dd]
-  - conda-forge::pooch=1.3.0[md5=7041d42601fe3de878565ca84c952237]
-  - conda-forge::pygmt=0.3.1[md5=0d26f8a30ab421d20feec901e4d881a7]
-  - conda-forge::python=3.8.6[md5=e43784498e6c5983eb80ab00e7ba1c7c]
+  - conda-forge::geopandas=0.10.2[md5=0682614964c1319304cfa554cbce90f0]
+  - conda-forge::gmt=6.3.0[md5=33b50fbcc58b0b1974b14975f448a496]
+  - conda-forge::jupyterlab=3.2.5[md5=65cdee8eed9ee3765b2669c6f20c42c5]
+  - conda-forge::jupytext=1.13.4[md5=ccb53fa8935db24b27532bec708a0777]
+  - conda-forge::pooch=1.5.2[md5=be1f708f932f28b1583de00c4de454e0]
+  - conda-forge::pygmt=0.5.0[md5=66cb6bd71b485d689be946e35d70f2ab]
+  - conda-forge::python=3.9.7[md5=e9741ee23c7a0ea9b8968b517b9a8f9a]
