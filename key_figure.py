@@ -7,11 +7,11 @@
 #       extension: .py
 #       format_name: hydrogen
 #       format_version: '1.3'
-#       jupytext_version: 1.9.1
+#       jupytext_version: 1.13.4
 #   kernelspec:
-#     display_name: gmt
+#     display_name: Python 3 (ipykernel)
 #     language: python
-#     name: gmt
+#     name: python3
 # ---
 
 # %% [markdown]
@@ -49,7 +49,7 @@ os.makedirs(name=datafold, exist_ok=True)
 # %%
 # MODIS Mosaic of Antarctica
 moa_no_nan: str = pooch.retrieve(
-    url="ftp://ftp.nsidc.org/pub/DATASETS/nsidc0593_moa2009/geotiff/moa750_2009_hp1_v01.1.tif.gz",
+    url="ftp://ftp.nsidc.org/pub/DATASETS/nsidc0593_moa2009_v02/geotiff/moa750_2009_hp1_v02.0.tif.gz",
     known_hash="90d1718ea0971795ec102482c47f308ba08ba2b88383facb9fe210877e80282c",
     path=f"{datafold}/SatelliteImagery/MODIS",
     processor=pooch.Decompress(name="moa750_2009_hp1_v1.1.tif"),
@@ -72,6 +72,7 @@ shapefiles: list = pooch.retrieve(
     processor=pooch.Unzip(),
 )
 groundingline: str = [file for file in shapefiles if file.endswith(".shp")][0]
+gdf_groundingline: gpd.GeoDataFrame = gpd.read_file(filename=groundingline)
 
 # %%
 # MEaSUREs Phase Map of Antarctic Ice Velocity
@@ -107,8 +108,8 @@ except AssertionError:
 
 # %%
 # DeepIceDrain active subglacial lake outlines
-lakes = "https://raw.githubusercontent.com/weiji14/deepicedrain/v0.4.1/antarctic_subglacial_lakes_3031.geojson"
-
+lakes = "https://raw.githubusercontent.com/weiji14/deepicedrain/0cec859288b2add98a42b095955c8ec644dd616f/antarctic_subglacial_lakes_3031.geojson"
+gdf_lakes: gpd.GeoDataFrame = gpd.read_file(filename=lakes)
 
 # %% [markdown]
 # ### Make color maps
@@ -181,7 +182,7 @@ with pygmt.config(
     )
 
 # Plot the grounding line in white
-fig.plot(data=groundingline, region=sipreg, projection=sipproj, pen="0.15p,white")
+fig.plot(data=gdf_groundingline, region=sipreg, projection=sipproj, pen="0.15p,white")
 
 
 # %%
@@ -201,20 +202,15 @@ fig.show()
 
 # %%
 # Plot lakes in PS71 as blobs (red for draining, blue for filling)
-# TODO refactor after pygmt/geopandas integration is done,
-# see https://github.com/GenericMappingTools/pygmt/issues/608
-with pygmt.helpers.GMTTempFile(suffix=".gmt") as tmpfile:
-    os.remove(path=tmpfile.name)
-    gpd.read_file(lakes).to_file(tmpfile.name, driver="OGR_GMT")
-    fig.plot(
-        data=tmpfile.name,  # "antarctic_subglacial_lakes_3031.geojson"
-        pen="thinnest,yellow,-",
-        cmap="cmap_dhdt.cpt",
-        color="+z",
-        close=True,
-        # transparency=30,
-        a="Z=inner_dhdt",
-    )
+fig.plot(
+    data=gdf_lakes,
+    pen="thinnest,yellow,-",
+    cmap="cmap_dhdt.cpt",
+    color="+z",
+    close=True,
+    # transparency=30,
+    aspatial="Z=inner_dhdt",
+)
 
 # %%
 # Siple Coast placename labels
@@ -393,7 +389,7 @@ with pygmt.config(
     )
 
 # Plot the grounding line in white
-fig.plot(data=groundingline, region=aisreg, projection=aisproj, pen="0.15p,white")
+fig.plot(data=gdf_groundingline, region=aisreg, projection=aisproj, pen="0.15p,white")
 
 # Plot bounding box of Siple Coast study area
 fig.plot(
@@ -453,17 +449,7 @@ fig.text(
 
 # %%
 # Plot lakes in PS71 as cyan blobs with 60% transparency
-# TODO refactor after pygmt/geopandas integration is done,
-# see https://github.com/GenericMappingTools/pygmt/issues/608
-with pygmt.helpers.GMTTempFile(suffix=".gmt") as tmpfile:
-    os.remove(path=tmpfile.name)
-    gpd.read_file(lakes).to_file(tmpfile.name, driver="OGR_GMT")
-    fig.plot(
-        data=tmpfile.name,  # "antarctic_subglacial_lakes_3031.geojson"
-        pen="0.5p,cyan",
-        color="cyan",
-        transparency=60,
-    )
+fig.plot(data=gdf_lakes, pen="0.5p,cyan", color="cyan", transparency=60)
 fig.show()
 
 # %%
@@ -499,5 +485,46 @@ fig.show()
 # Save the figure
 fig.savefig(fname="antarctica_lakes.pdf")
 fig.savefig(fname="antarctica_lakes.png", dpi=600)
+fig.savefig(fname="antarctica_lakes.jpg", dpi=900)
 
 # %%
+
+# %% [markdown] tags=[]
+# ## Name lake clusters
+#
+# Manually selecting some subglacial lakes by their id(s) to give them a name.
+# Export this set to an OGR GMT format that can be plotted easily later.
+
+# %%
+# Name the lakes!
+import deepicedrain
+import pandas as pd
+import pygmt
+import geopandas as gpd
+import os
+
+_ = pygmt.which(fname=lakes, download=True)
+lake_catalog = deepicedrain.catalog.subglacial_lakes()
+antarctic_lakes = lake_catalog.read()
+antarctic_lakes.insert(loc=0, column="lake_name", value=pd.NA)
+
+for _, lake_data in pd.json_normalize(lake_catalog.metadata["lakedict"]).iterrows():
+    for id in lake_data.ids:
+        antarctic_lakes.at[id, "lake_name"] = lake_data.lakename
+subset_lakes = antarctic_lakes.dropna(subset=["lake_name"]).set_index(
+    keys=["lake_name"]
+)
+subset_lakes: gpd.GeoDataFrame = subset_lakes.sort_values(
+    by=["basin_name", "lake_name"]
+)
+
+# %%
+# Save subset of lakes
+# subset_lakes = gdf.query("basin_name == 'Whillans'")
+try:
+    os.remove(f"antarctic_subglacial_lakes_3031.gmt")
+except FileNotFoundError:
+    pass
+subset_lakes.to_file(
+    filename=f"antarctic_subglacial_lakes_3031.gmt", driver="OGR_GMT", index=True
+)

@@ -9,8 +9,8 @@ happening in New Orleans & Online everywhere from 13-17 December 2021.
 [![nbviewer](https://img.shields.io/badge/jupyter_notebooks-nbviewer-purple.svg?style=flat-square)](https://nbviewer.jupyter.org/github/weiji14/agu2021/blob/main/key_figure.ipynb)
 
 ![AGU2021 DeepIceDrain poster](https://user-images.githubusercontent.com/23487320/107176091-4b0dbd00-6a33-11eb-9eba-2d13959e43a8.png)
-![Siple Coast active subglacial lakes](https://user-images.githubusercontent.com/23487320/107176140-6aa4e580-6a33-11eb-8f30-1a7913788d6c.png)
-![Antarctic active subglacial lakes](https://user-images.githubusercontent.com/23487320/112776311-d7d01100-909b-11eb-98df-1c8fa106f34e.png)
+![Siple Coast active subglacial lakes](https://user-images.githubusercontent.com/23487320/145827669-6fe3581a-af92-41ea-ba9e-11256a5c09a5.png)
+![Antarctic active subglacial lakes](https://user-images.githubusercontent.com/23487320/145827635-89af64e5-e74e-4834-b793-b7332ff1291e.jpg)
 
 ## Quickstart
 
